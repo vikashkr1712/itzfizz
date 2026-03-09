@@ -22,6 +22,7 @@ export default function HeroSection() {
   const carRef = useRef<HTMLImageElement>(null);
   const trailRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLDivElement>(null);
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -29,6 +30,17 @@ export default function HeroSection() {
       const trail = trailRef.current;
       const headlineWrap = headlineRef.current;
       if (!car || !trail || !headlineWrap) return;
+
+      // --- Initial page-load intro animation ---
+      const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+
+      // Fade in the road area
+      tl.from(".road", { opacity: 0, y: 20, duration: 0.8 });
+
+      // Slide in the car from off-screen left
+      tl.from(car, { x: -200, opacity: 0, duration: 0.7 }, "-=0.4");
+
+      // --- End intro ---
 
       const letters = headlineWrap.querySelectorAll<HTMLSpanElement>(".value-letter");
       const headlineRect = headlineWrap.getBoundingClientRect();
@@ -86,9 +98,10 @@ export default function HeroSection() {
       <div className="track">
         {/* Road with car animation */}
         <div className="road" id="road">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             ref={carRef}
-            src="/car-top-view.png"
+            src={`${basePath}/car-top-view.png`}
             alt="Car top view"
             className="car-img"
             draggable={false}
