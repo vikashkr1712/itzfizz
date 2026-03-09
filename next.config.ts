@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const basePath = "/itxfizz";
+const basePath = "/itzfizz";
 
 const nextConfig: NextConfig = {
   output: "export",
